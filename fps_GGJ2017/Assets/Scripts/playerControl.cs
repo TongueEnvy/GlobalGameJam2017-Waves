@@ -59,7 +59,7 @@ public class playerControl : MonoBehaviour {
 
     void FixedUpdate () {
 //Make the player walk
-        playerRigidBody.AddForce(playerVelocity,ForceMode.Impulse);
+        playerRigidBody.AddRelativeForce(playerVelocity,ForceMode.Impulse);
 //Aim the player left and right
         transform.Rotate(turnPlayer);
 //Aim the gun up & down
