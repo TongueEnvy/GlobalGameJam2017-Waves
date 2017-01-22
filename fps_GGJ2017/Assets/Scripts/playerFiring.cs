@@ -29,7 +29,7 @@ public class playerFiring : MonoBehaviour {
         timer += Time.deltaTime;
 
         // If the Fire1 button is being press and it's time to fire...
-        if((Input.GetButton("Fire1")) && (timer >= timeBetweenBullets)) {
+        if((Input.GetButton("Fire1") || (Input.GetAxis("Fire1") == 1)) && (timer >= timeBetweenBullets)) {
             // ... shoot the gun.
             Shoot();
         }
