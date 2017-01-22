@@ -7,6 +7,11 @@ public class playerFiring : MonoBehaviour {
 	public float timeBetweenBullets =	0.15f;        // The time between each shot.
 	public float range =				100f;         // The distance the gun can fire.
 
+    public float gunSpread;
+    private float gunSpreadX;
+    private float gunSpreadY;
+    private Vector3 shotDirMod;
+
 	private float timer;                              // A timer to determine when to fire.
 	private int shootableMask;                        // A layer mask so the raycast only hits things on the shootable layer.
 	private Ray shootRay;                             // A ray from the gun end forwards.
@@ -31,6 +36,9 @@ public class playerFiring : MonoBehaviour {
         // If the Fire1 button is being press and it's time to fire...
         if((Input.GetButton("Fire1") || (Input.GetAxis("Fire1") == 1)) && (timer >= timeBetweenBullets)) {
             // ... shoot the gun.
+            gunSpreadX = Random.Range(-gunSpread, gunSpread);
+            gunSpreadY = Random.Range(-gunSpread, gunSpread);
+            shotDirMod = new Vector3(gunSpreadX, gunSpreadY, 0);
             Shoot();
         }
 		
@@ -49,6 +57,8 @@ public class playerFiring : MonoBehaviour {
 	void Shoot() {
         // Reset the timer.
         timer = 0f;
+
+        //Gun Recoil
 		
 		// Enable the line renderer and set it's first position to be the end of the gun.
         gunLine.enabled = true;
@@ -56,7 +66,7 @@ public class playerFiring : MonoBehaviour {
 
         // Set the shootRay so that it starts at the end of the gun and points forward from the barrel.
         shootRay.origin = transform.position;
-        shootRay.direction = transform.forward;
+        shootRay.direction = (transform.forward) + shotDirMod;
 
         // Perform the raycast against gameobjects on the shootable layer and if it hits something...
         if(Physics.Raycast(shootRay, out shootHit, range, shootableMask)) {
