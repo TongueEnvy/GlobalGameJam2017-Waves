@@ -5,16 +5,12 @@ using UnityEngine;
 public class playerAim : MonoBehaviour {
     public GameObject player;
     public GameObject playerShoulder;
-
     public float turnSpeedFactor;
 
     private float turnH;
     private float turnV;
-    
     private Vector3 turnPlayer;
     private Vector3 turnShoulder;
-
-    
 	
     // Use this for initialization
     void Start() {
@@ -27,7 +23,7 @@ public class playerAim : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update() {
 		//"Y" component of player aim
         turnH = (Input.GetAxisRaw("Mouse X") * turnSpeedFactor);
 		//"X" component of player aim
@@ -38,7 +34,7 @@ public class playerAim : MonoBehaviour {
         turnShoulder = new Vector3(turnV, 0, 0);
 	}
 
-    void FixedUpdate () {
+    void FixedUpdate() {
 		//Aim the player left and right
         transform.Rotate(turnPlayer);
 		//Aim the gun up & down

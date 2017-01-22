@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class playerMove : MonoBehaviour {
     public Rigidbody playerRigidBody;
-
     public float moveSpeedFactor;
-
+    public float jumpForce;
+    public Collider groundedCheck;
+	
     private float speedH;
     private float speedV;
-
     private Vector3 playerVelocity;
-
-    public float jumpForce;
     private float speedUP;
-    public Collider groundedCheck;
     private bool grounded;
 
     // Use this for initialization
@@ -42,16 +39,17 @@ public class playerMove : MonoBehaviour {
         //Final walk direction
         playerVelocity = new Vector3(speedH, 0, speedV);
         //"Y" component of player movement(for jumping)
-        if ((grounded == true) && (Input.GetButtonDown("Jump"))){
+        if((grounded == true) && (Input.GetButtonDown("Jump"))) {
             speedUP = jumpForce;
             grounded = false;
         }
+		
         else {
             speedUP = 0;
             grounded = false;
         }
     }
-    void FixedUpdate (){
+    void FixedUpdate() {
         //Make the player walk
         playerRigidBody.AddRelativeForce(playerVelocity, ForceMode.Impulse);
         //Make the player jump
