@@ -30,13 +30,13 @@ public class playerAim : MonoBehaviour {
         turnV = (Input.GetAxisRaw("Mouse Y") * (turnSpeedFactor * -1));
 		//Final aim direction (Player)
         turnPlayer = new Vector3(0, turnH, 0);
-		//Final aim direction (Gun)
+        //Aim the player left and right
+        transform.Rotate(turnPlayer);
+        //Final aim direction (Gun)
         turnShoulder = new Vector3(turnV, 0, 0);
 	}
 
-    void FixedUpdate() {
-		//Aim the player left and right
-        transform.Rotate(turnPlayer);
+	void FixedUpdate () {
 		//Aim the gun up & down
         playerShoulder.transform.Rotate(turnShoulder);
     }

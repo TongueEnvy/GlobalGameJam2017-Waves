@@ -41,18 +41,13 @@ public class playerMove : MonoBehaviour {
         //"Y" component of player movement(for jumping)
         if((grounded == true) && (Input.GetButtonDown("Jump"))) {
             speedUP = jumpForce;
-            grounded = false;
-        }
-		
-        else {
-            speedUP = 0;
+            //Make the player jump
+            playerRigidBody.AddRelativeForce(0, speedUP, 0, ForceMode.Impulse);
             grounded = false;
         }
     }
     void FixedUpdate() {
         //Make the player walk
         playerRigidBody.AddRelativeForce(playerVelocity, ForceMode.Impulse);
-        //Make the player jump
-        playerRigidBody.AddRelativeForce(0, speedUP, 0, ForceMode.Impulse);
     }
 }
