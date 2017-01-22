@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class playerAim : MonoBehaviour {
+    private bool paused;
+
     public GameObject player;
     public GameObject playerShoulder;
 
@@ -25,23 +27,35 @@ public class playerAim : MonoBehaviour {
 		//Identify player's shoulder (gun & camera's parent)
         playerShoulder = player.transform.Find("playerShoulder").gameObject;
     }
+
+    void OnPauseGame() {
+        paused = true;
+    }
+
+    void OnResumeGame() {
+        paused = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		//"Y" component of player aim
-        turnH = (Input.GetAxisRaw("Mouse X") * turnSpeedFactor);
-		//"X" component of player aim
-        turnV = (Input.GetAxisRaw("Mouse Y") * (turnSpeedFactor * -1));
-		//Final aim direction (Player)
-        turnPlayer = new Vector3(0, turnH, 0);
-        //Aim the player left and right
-        transform.Rotate(turnPlayer);
-        //Final aim direction (Gun)
-        turnShoulder = new Vector3(turnV, 0, 0);
+        if (!paused) {
+            //"Y" component of player aim
+            turnH = (Input.GetAxisRaw("Mouse X") * turnSpeedFactor);
+            //"X" component of player aim
+            turnV = (Input.GetAxisRaw("Mouse Y") * (turnSpeedFactor * -1));
+            //Final aim direction (Player)
+            turnPlayer = new Vector3(0, turnH, 0);
+            //Aim the player left and right
+            transform.Rotate(turnPlayer);
+            //Final aim direction (Gun)
+            turnShoulder = new Vector3(turnV, 0, 0);
+        }
 	}
 
     void FixedUpdate () {
-		//Aim the gun up & down
-        playerShoulder.transform.Rotate(turnShoulder);
+        if (!paused) {
+            //Aim the gun up & down
+            playerShoulder.transform.Rotate(turnShoulder);
+        }
     }
 }
