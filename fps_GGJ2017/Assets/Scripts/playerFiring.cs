@@ -11,12 +11,16 @@ public class playerFiring : MonoBehaviour {
 	private int shootableMask;                        // A layer mask so the raycast only hits things on the shootable layer.
 	private Ray shootRay;                             // A ray from the gun end forwards.
     private RaycastHit shootHit;                      // A raycast hit to get information about what was hit.
+	private LineRenderer gunLine;                     // Reference to the line renderer.
+	private float effectsDisplayTime = 0.2f;          // The proportion of the timeBetweenBullets that the effects will display for.
 
-	
 	// Use this for initialization
 	void Awake() {
         // Create a layer mask for the Shootable layer.
         shootableMask = LayerMask.GetMask ("Shootable");
+		
+		// Set up the references.
+		gunLine = GetComponent <LineRenderer> ();
     }
 	
 	// Update is called once per frame
@@ -29,11 +33,26 @@ public class playerFiring : MonoBehaviour {
             // ... shoot the gun.
             Shoot();
         }
+		
+		if(timer >= timeBetweenBullets * effectsDisplayTime) {
+            // ... disable the effects.
+            DisableEffects ();
+        }
 	}
+	
+	public void DisableEffects() {
+        // Disable the line renderer and the light.
+        gunLine.enabled = false;
+        //gunLight.enabled = false;
+    }
 	
 	void Shoot() {
         // Reset the timer.
         timer = 0f;
+		
+		// Enable the line renderer and set it's first position to be the end of the gun.
+        gunLine.enabled = true;
+        gunLine.SetPosition(0, transform.position);
 
         // Set the shootRay so that it starts at the end of the gun and points forward from the barrel.
         shootRay.origin = transform.position;
@@ -51,12 +70,12 @@ public class playerFiring : MonoBehaviour {
             }
 
             // Set the second position of the line renderer to the point the raycast hit.
-            //gunLine.SetPosition (1, shootHit.point);
+            gunLine.SetPosition (1, shootHit.point);
         }
         // If the raycast didn't hit anything on the shootable layer...
-        //else {
+        else {
             // ... set the second position of the line renderer to the fullest extent of the gun's range.
-            //gunLine.SetPosition (1, shootRay.origin + shootRay.direction * range);
-        //}
+            gunLine.SetPosition (1, shootRay.origin + shootRay.direction * range);
+        }
     }
 }
